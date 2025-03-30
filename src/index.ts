@@ -8,6 +8,7 @@ import { connectDB } from './config/database';
 import { errorHandler } from './middleware/errorHandler';
 import { slackApp } from './config/slack';
 import { registerEventHandlers } from './slack/events';
+import authRouter from './routes/auth';
 
 connectDB();
 
@@ -15,6 +16,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/auth', authRouter);
 
 registerEventHandlers(slackApp);
 
