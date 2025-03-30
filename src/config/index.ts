@@ -11,4 +11,4 @@ export const CONFIG = {
     CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
   NODE_ENV: process.env.NODE_ENV || 'development',
-} as const; 
+} as const;
