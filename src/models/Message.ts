@@ -24,7 +24,7 @@ export enum CoachMessageType {
 }
 
 export interface Message {
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   type: MessageType;
   content: string;
   intent?: UserIntent;
@@ -43,10 +43,9 @@ export interface Message {
   updatedAt: Date;
 }
 
-const messageSchema = new mongoose.Schema<Message>({
+const messageSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true,
   },
   type: {
@@ -84,11 +83,13 @@ const messageSchema = new mongoose.Schema<Message>({
       plannedDate: Date,
       actualDate: Date,
       delayReason: String,
+      },
     },
   },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  },
+);
 
 messageSchema.index({ userId: 1, createdAt: -1 });
 messageSchema.index({ userId: 1, type: 1 });
