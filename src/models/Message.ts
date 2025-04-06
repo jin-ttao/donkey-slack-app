@@ -32,15 +32,10 @@ export interface Message {
   metadata?: {
     goalId?: mongoose.Types.ObjectId;
     actionId?: mongoose.Types.ObjectId;
-    progress?: {
-      status: 'not_started' | 'in_progress' | 'completed';
-      plannedDate?: Date;
-      actualDate?: Date;
-      delayReason?: string;
-    };
   };
   createdAt: Date;
   updatedAt: Date;
+  threadId: string;
 }
 
 const messageSchema = new mongoose.Schema({
@@ -75,25 +70,17 @@ const messageSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Action',
     },
-    progress: {
-      status: {
-        type: String,
-        enum: ['not_started', 'in_progress', 'completed'],
-      },
-      plannedDate: Date,
-      actualDate: Date,
-      delayReason: String,
-      },
-    },
   },
-  {
-    timestamps: true,
+  threadId: {
+    type: String,
+    required: true,
   },
-);
+}, {
+  timestamps: true,
+});
 
 messageSchema.index({ userId: 1, createdAt: -1 });
 messageSchema.index({ userId: 1, type: 1 });
 messageSchema.index({ 'metadata.goalId': 1 });
-messageSchema.index({ 'metadata.progress.status': 1 });
 
 export const Message = mongoose.model<Message>('Message', messageSchema);
